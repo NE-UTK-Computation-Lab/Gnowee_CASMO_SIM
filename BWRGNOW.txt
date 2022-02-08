@@ -1,0 +1,66 @@
+TTL * BWR Assembly
+* -------------------------
+* BWR system parameters
+PRE 72
+TMO 551.65
+PDE 50
+VOI 40
+* -------------------------
+* Assembly Geometry
+BWR 10 1.30 13.40 0.16 0.95 0.69 1.30
+* -------------------------
+* Pin Geometry
+PIN 1 0.44 0.45 0.51 /
+      'FUE' 'AIR' 'CAN'                   * Fuel Rod
+PIN 2 1.17  1.24 /
+      'MOD' 'BOX' /
+      /4                                  * Water Rod
+* -------------------------
+LPI                                       * Pin Layout
+1
+1 1
+1 1 1
+1 1 1 2
+1 1 1 2 2
+1 1 1 1 1 2
+1 1 1 1 1 2 2
+1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+* -------------------------
+* Fuel Materials
+TFU 768
+FUE 1 10.15/1.60
+FUE 2 10.15/2.80
+FUE 3 10.15/3.20
+FUE 4 10.15/3.60
+FUE 5 10.15/3.95
+FUE 6 10.15/4.40
+FUE 7 10.15/4.90
+FUE  8 9.98/3.95 64016=8                    * 3.95% enr, 8% GD2O3
+FUE  9 9.98/4.40 64016=6                    * 4.40% enr, 6% Gad
+FUE 10 9.98/4.40 64016=3                    * 4.40% enr, 3% Gad
+FUE 11 9.98/4.90 64016=6                    * 4.90% enr, 6% Gad
+FUE 12 9.98/4.90 64016=8                    * 4.90% enr, 8% Gad
+* -------------------------
+LFU                                       * LAYOUT OF FUEL
+2
+<var0> <var1>
+<var2> <var3> <var4>
+<var5> <var6> <var7> 0
+<var8> <var9> <var10> 0 0
+<var11> <var12> <var13> <var14> <var15> 0
+<var16> <var17> <var18> <var19> <var20> 0 0
+<var21> <var22> <var23> <var24> <var25> <var26> <var27> <var28>
+<var29> <var30> <var31> <var32> <var33> <var34> <var35> <var36> <var37>
+1 <var38> <var39> <var40> <var41> <var42> <var43> <var44> <var45> 2
+* -------------------------
+* Calculation Options
+BCO 'MIR'
+THE 0
+FUM , , 2
+* -------------------------
+* Depletion Calculation
+DEP -63 * MWd/kgHM
+STA
+END
