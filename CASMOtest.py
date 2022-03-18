@@ -114,10 +114,30 @@ def CASMOtest(vec):
     constraints = np.genfromtxt('constraints.csv')
     ppf = max(constraints[:,7])
     print(ppf)
+    
+    #get enrichment
+    enrich = gr(init_file+'.out','1 40.0  768.0  551.7  551.7    0.0        0.000','enrich.csv')
+    enrich = np.genfromtxt('enrich.csv')
+    enrichment = (enrich[12])
+    print(enrichment)
+
+    #Separative Work Unit (SWU) Calculations
+    xp = enrichment/100 #concentration of the product uranium
+    xf = 0.00711 #concentration of the feed uranium
+    xt = 0.002 #concentration of the tails
+    Mp = np.pi*(.44**2)*15.24*10.97 #mass of the product uranium
+    Mf = ((xp-xt)/(xf-xt))*Mp #mass of the feed uranium
+    Mt = Mf-Mp #mass of the tails
+    #Value functions
+    Vxp = (1-2*xp)*np.log((1-xp)/xp)
+    Vxt = (1-2*xt)*np.log((1-xt)/xt)
+    Vxf = (1-2*xf)*np.log((1-xf)/xf)
+    Swu = Mp*Vxp + Mt*Vxt - Mf*Vxf #grams
+    cost = 98*Swu/1000 #$
 
     # Fitness calculation
     #option 1 - constraint on ppf
-    # if ppf>=1.8:
+    # if ppf>=1.6:
     #     #removes lattice arrangements that result in a ppf over the constraint
     #     fitness = 1E9
     # else:
@@ -126,7 +146,9 @@ def CASMOtest(vec):
     #option 2 - multi-objective function
     # fitness = 2 + (ppf-1.6) + (0.85-kvals)
     #option 3 - multi-objective function w/ weighting factors
-    fitness = 100 + 100*(ppf-1.6) + 1000*(0.85-kvals)
+    # fitness = 100 + 100*(ppf-1.6) + 1000*(0.85-kvals)
+    #option 4 - multi-objective w/weighting w/cost factors
+    fitness = 100 + 100*(ppf-1.6) + 1000*(0.85-kvals) + (cost-88.2)/5
     print(fitness)
     
     

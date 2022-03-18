@@ -67,6 +67,11 @@ for i in range(0,length):
     #changed t to ti
     fitnesses[i] = ti.fitness
     generations[i] = ti.generation
+    
+    with open("fitgen.txt", "a") as file_object:
+        file_object.write(str(fitnesses[i])+'; '+str(generations[i])+'\n')
+
+
 
 plt.plot(generations, fitnesses, '-r', lw=2) # plot the data as a line
 plt.xlabel('Population', fontsize=14) # label x axis

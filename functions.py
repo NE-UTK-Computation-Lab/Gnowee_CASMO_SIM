@@ -340,25 +340,26 @@ def run_on_cluster(common_string):
 
         print("Submitting CASMO job: " + file)
         list_of_jobs_submitted.append(file)
+        current_Dir = os.getcwd()
 
         if submit_jobs == True:
             # This line submits the job
-            os.system('qsub ' + script_file_string)
+            os.system('qsub ' + script_file_string + '>> cluster_submission.txt')
             # template=open('cluster_submission.txt','r')
 #NOTE: SEEMS THIS FILE DOES NOT EXIST AND WE GET STUCK IN INF LOOP
-            # while not os.path.exists(file.replace('.inp','_done.dat')):
-            #     template=open('cluster_submission.txt','r')
-            #     for line in template:
-            #         if 'socket_connect_unix failed' in line:
-            #             os.remove('cluster_submission.txt')
-            #             time.sleep(5)
-            #             os.system('ssh -tt necluster.ne.utk.edu "cd ' + current_Dir + ' && qsub ' + script_file_string+'>> cluster_submissions.txt'+'"')
-            #         else:
-            #             print('Job not complete waiting 15 seconds')
-            #             time.sleep(15)
+            while not os.path.exists(file.replace('.inp','_done.dat')):
+                template=open('cluster_submission.txt','r')
+                for line in template:
+                    if 'socket_connect_unix failed' in line:
+                        os.remove('cluster_submission.txt')
+                        time.sleep(5)
+                        os.system('ssh -tt necluster.ne.utk.edu "cd ' + current_Dir + ' && qsub ' + script_file_string+'>> cluster_submissions.txt'+'"')
+                    else:
+                        print('Job not complete waiting 15 seconds')
+                        time.sleep(15)
                         
-            # template.close()
-        # os.remove('cluster_submission.txt')
+            template.close()
+        os.remove('cluster_submission.txt')
     return list_of_jobs_submitted
 
 
