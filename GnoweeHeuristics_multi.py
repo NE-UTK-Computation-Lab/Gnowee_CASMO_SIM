@@ -52,10 +52,10 @@ class GnoweeHeuristics_multi(ProblemParameters_multi):
     """
 
     ##
-    def __init__(self, population=25, initSampling='lhc', fracMutation=0.2,
+    def __init__(self, population=100, initSampling='lhc', fracMutation=0.2,
                  fracElite=0.2, fracLevy=1.0, alpha=0.5, gamma=1, n=1,
-                 scalingFactor=10.0, penalty=0.0, maxGens=1000,
-                 maxFevals=50000, convTol=1e-6, stallLimit=5000,
+                 scalingFactor=10.0, penalty=0.0, maxGens=20000,
+                 maxFevals=10000, convTol=1e-6, stallLimit=5000,
                  optConvTol=1e-2, **kwargs):
         """!
         Constructor to build the GnoweeHeuristics class.  This class must be
