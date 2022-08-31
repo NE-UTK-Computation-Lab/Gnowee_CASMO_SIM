@@ -1,0 +1,27 @@
+'COM'  * ------------------------------------------------------*
+'COM'  *                                                       *
+'COM'  *                BWRX-300 MODEL                         *
+'COM'  *                                                       *
+'COM'  *               RODDED DEPLETION                        *
+'COM'  *                                                       *
+'COM'  * ------------------------------------------------------*
+
+'DIM.CAL' 25 2 1 1 /             * 25 axial nodes, Quarter core
+
+'RES' 'cyc01.haling.res' 0.0/
+'PIN.EDT' 'ON'/
+
+'TIT.CAS' 'RODDED DEPLETION ON OPT DESIGN'/ * Title for each case in run
+
+'COM' * ----------------- CB Pattern 1 ------------------------*
+'COR.OPE'  100 100/
+'CRD.POS',5, 7*,   <var0> <var1> <var0> <var1> <var0> /
+'CRD.POS',6, 7*,   <var2> <var3> <var2> <var3> <var2> /
+'CRD.POS',7, 7*,   <var0> <var1> <var0> <var1> /
+'CRD.POS',8, 7*,   <var2> <var3> <var2> /
+'CRD.POS',9, 7*,   <var0> <var1> /
+'DEP.STA' 'AVE' 1.5 /
+'WRE'/
+'STA' /
+
+'END'/
