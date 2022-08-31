@@ -37,11 +37,11 @@ def SIM3(vec):
     
     #initialization of function inputs
     #---------------------------------
-    init_file = 'blade_pattern' #name of optimization files
+    init_file = 'blade_pattern' #name of optimization files (cyc01_opt,cyc02_opt)
     num_of_var_opt = 4 #number of variables to optimize
     num_of_files = 9 #.inp,.cms,.sum,.res,.out,_done.dat,_script.txt,_script.txto, _script.txte
-    input_file = 'rodded_opt.txt' #mock input file
-    variables = 'bladepattern.csv' #csv file with all variable options
+    input_file = 'rodded_opt.txt' #mock input file (cyc01.txt,cyc02.txt)
+    variables = 'bladepattern.csv' #csv file with all variable options (fueltypes_sim.csv,axialsegments.csv)
     
     #calling the functions
     #---------------------
@@ -199,7 +199,7 @@ def CASMO4(vec):
     
     # #initialization of function inputs
     # #---------------------------------
-    # init_file = 'test0'
+    # init_file = 'casmo_opt'
     # num_of_var_opt = 46
     # num_of_files = 8 #.inp,.cax,.log,.out,_done.dat,_script.txt,_script.txto, _script.txte
     # input_file = 'BWRGNOW.txt'
@@ -235,11 +235,11 @@ def CASMO4(vec):
     
     #initialization of function inputs
     #---------------------------------
-    init_file = 'test0'
+    init_file = 'casmo_opt'
     num_of_var_opt1 = 30 #int
     num_of_var_opt2 = 16 #ext
     num_of_files = 8 #.inp,.cax,.log,.out,_done.dat,_script.txt,_script.txto, _script.txte
-    input_file = 'BWR_inp.txt'
+    input_file = 'BWR_lattice.txt'
     
     #calling the functions
     #---------------------
