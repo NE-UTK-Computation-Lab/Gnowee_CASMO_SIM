@@ -1,0 +1,249 @@
+'COM'  * ------------------------------------------------------*
+'COM'  *                                                       *
+'COM'  *                BWRX-300 MODEL                         *
+'COM'  *                                                       *
+'COM'  *                C Y C L E    1                         *
+'COM'  *                                                       *
+'COM'  * ------------------------------------------------------*
+
+'DIM.BWR' 18 9 16 /                                       * 18 rows of fuel assemblies, 9 c-rods & 16 det. loc.
+'DIM.CAL' 25 2 1 1 /                                      * 25 axial nodes, Quarter core
+'DIM.DEP' 'EXP' 'XEN' 'SAM' 'HTF' 'HVOI' 'HCRD' 'PIN' /   * Select depletion arguments
+
+'TIT.CAS' 'Opt Cycle 1 Basedeck and Depletion'/           * Title for each case in run
+'TIT.PRO' 'SMR BWR model'/                                * Project name
+'TIT.RUN' 'BaseDeplOPt'/                                  * Run name for this stack of cases
+
+'COR.DAT' 15.24 381.0 45.8 266.3 /                        * Core data given above
+'COR.MWT' 870,1530,1044.27,,,870,1530 /                   * Core operating data
+
+'COM' Build axially zoned fuel types and assign axial top and bottom reflectors
+'COM' As a matter of practice always specify reflector segments first - 
+'COM' since they will always be required - in all cases
+ 
+'REF.LIB'  01 'RADREF'/       * Link 'RADREF'in the TABLES library to SIMULATE segment number 01  
+'REF.LIB'  02 'BOTREF'/
+'REF.LIB'  03 'TOPREF'/
+'SEG.LIB'  04 'BWRU071G00'/   * Fuel composition: same as for reflector case 
+'SEG.DAT'  04  0.711/
+'SEG.LIB'  05 'BWRU096G00'/
+'SEG.DAT'  05  0.96/
+'SEG.LIB'  06 'BWRU296G43'/
+'SEG.DAT'  06  2.96/ 
+'SEG.LIB'  07 'BWRU261G33'/
+'SEG.DAT'  07  2.61/ 
+'SEG.LIB'  08 'BWRU171G22'/
+'SEG.DAT'  08  1.71/
+'SEG.LIB'  09 'BWRU248G44'/
+'SEG.DAT'  09  2.48/
+'SEG.LIB'  10 'BWRU253G44'/
+'SEG.DAT'  10  2.53/
+'SEG.LIB'  11 'BWRU255G44'/
+'SEG.DAT'  11  2.55/
+'SEG.LIB'  12 'BWRU260G44'/
+'SEG.DAT'  12  2.60/
+'SEG.LIB'  13 'BWRU274G44'/
+'SEG.DAT'  13  2.74/
+'SEG.LIB'  14 'BWRU278G44'/
+'SEG.DAT'  14  2.78/
+'SEG.LIB'  15 'BWRU278G64'/
+'SEG.DAT'  15  2.78/
+'SEG.LIB'  16 'BWRU278G84'/
+'SEG.DAT'  16  2.78/
+'SEG.LIB'  17 'BWRU4274G5'/
+'SEG.DAT'  17  4.27/
+'SEG.LIB'  18 'BWRU427G77'/
+'SEG.DAT'  18  4.27/
+'SEG.LIB'  19 'BWRU500G56'/
+'SEG.DAT'  19  5.00/
+'SEG.LIB'  20 'BWRU553G67'/
+'SEG.DAT'  20  5.53/
+'SEG.LIB'  21 'BWRU600G57'/
+'SEG.DAT'  21  6.00/
+'SEG.LIB'  22 'BWRU625G57'/
+'SEG.DAT'  22  6.25/
+'SEG.LIB'  23 'BWRU644G58'/
+'SEG.DAT'  23  6.44/
+'SEG.LIB'  24 'BWRU668G67'/
+'SEG.DAT'  24 6.68/
+'SEG.LIB'  25 'BWRU688G57'/
+'SEG.DAT'  25  6.88/
+'SEG.LIB'  26 'BWRU693G58'/
+'SEG.DAT'  26  6.93/
+'SEG.LIB'  27 'BWRU705G57'/
+'SEG.DAT'  27  7.05/
+'SEG.LIB'  28 'BWRU717G68'/
+'SEG.DAT'  28  7.17/
+'SEG.LIB'  29 'BWRU722G58'/
+'SEG.DAT'  29  7.22/
+'SEG.LIB'  30 'BWRU800G58'/
+'SEG.DAT'  30  8.00/
+
+'COM' *---------------------      Specify the fuel assembly axial zones    -------------------------*
+
+ 'FUE.ZON'  01 1 'RADIAL'   02 0.00  01                       381.0 03 /
+ 'FUE.ZON'  02 1 'E071'     02 0.00  04                       381.0 03 /
+ 'FUE.ZON'  03 1 'E096'     02 0.00  04 15.24  05  365.76  04 381.0 03 /
+ 'FUE.ZON'  04 1 'E171-2G2' 02 0.00  04 15.24  08  365.76  04 381.0 03 /
+ 'FUE.ZON'  05 1 'E248-4G4' 02 0.00  04 15.24  09  365.76  04 381.0 03 /
+ 'FUE.ZON'  06 1 'E253-4G4' 02 0.00  04 15.24  10  365.76  04 381.0 03 /
+ 'FUE.ZON'  07 1 'E255-4G4' 02 0.00  04 15.24  11  365.76  04 381.0 03 /
+ 'FUE.ZON'  08 1 'E260-4G4' 02 0.00  04 15.24  12  365.76  04 381.0 03 /
+ 'FUE.ZON'  09 1 'E261-2G3' 02 0.00  04 15.24  07  365.76  04 381.0 03 /
+ 'FUE.ZON'  10 1 'E274-4G4' 02 0.00  04 15.24  13  365.76  04 381.0 03 /
+ 'FUE.ZON'  11 1 'E278-4G4' 02 0.00  04 15.24  14  365.76  04 381.0 03 /
+ 'FUE.ZON'  12 1 'E278-6G4' 02 0.00  04 15.24  15  365.76  04 381.0 03 /
+ 'FUE.ZON'  13 1 'E278-8G4' 02 0.00  04 15.24  16  365.76  04 381.0 03 /
+ 'FUE.ZON'  14 1 'E296-4G3' 02 0.00  04 15.24  06  365.76  04 381.0 03 /
+ 'FUE.ZON'  15 1 'E427-4G5' 02 0.00  04 15.24  17  365.76  04 381.0 03 /
+ 'FUE.ZON'  16 1 'E427-7G7' 02 0.00  04 15.24  18  365.76  04 381.0 03 /
+ 'FUE.ZON'  17 1 'E500-5G6' 02 0.00  04 15.24  19  365.76  04 381.0 03 /
+ 'FUE.ZON'  18 1 'E553-6G7' 02 0.00  04 15.24  20  365.76  04 381.0 03 /
+ 'FUE.ZON'  19 1 'E600-5G7' 02 0.00  04 15.24  21  365.76  04 381.0 03 /
+ 'FUE.ZON'  20 1 'E625-5G7' 02 0.00  04 15.24  22  365.76  04 381.0 03 /
+ 'FUE.ZON'  21 1 'E644-5G8' 02 0.00  04 15.24  23  365.76  04 381.0 03 /
+ 'FUE.ZON'  22 1 'E668-6G7' 02 0.00  04 15.24  24  365.76  04 381.0 03 /
+ 'FUE.ZON'  23 1 'E688-5G7' 02 0.00  04 15.24  25  365.76  04 381.0 03 /
+ 'FUE.ZON'  24 1 'E693-5G8' 02 0.00  04 15.24  26  365.76  04 381.0 03 /
+ 'FUE.ZON'  25 1 'E705-5G7' 02 0.00  04 15.24  27  365.76  04 381.0 03 /
+ 'FUE.ZON'  26 1 'E717-6G8' 02 0.00  04 15.24  28  365.76  04 381.0 03 /
+ 'FUE.ZON'  27 1 'E722-5G8' 02 0.00  04 15.24  29  365.76  04 381.0 03 /
+ 'FUE.ZON'  28 1 'E800-5G8' 02 0.00  04 15.24  30  365.76  04 381.0 03 /
+
+
+'FUE.TYP'  1,  <var0> <var1> <var2> <var3> <var4> <var5> <var6> <var7>  2  1/
+'FUE.TYP'  2,  <var1> <var8> <var9> <var10> <var11> <var12> <var13> <var14>  2  1/
+'FUE.TYP'  3,  <var2> <var9> <var15> <var16> <var17> <var18> <var19> <var20>  2  1/
+'FUE.TYP'  4,  <var3> <var10> <var16> <var21> <var22> <var23> <var24>  2  1  1/
+'FUE.TYP'  5,  <var4> <var11> <var17> <var22> <var25> <var26>  2  1  1  0/
+'FUE.TYP'  6,  <var5> <var12> <var18> <var23> <var26> 2  1  1  0  0/
+'FUE.TYP'  7,  <var6> <var13> <var19> <var24> 2  1  1  0  0  0/
+'FUE.TYP'  8,  <var7> <var14> <var20> 2  1  1  0  0  0  0/
+'FUE.TYP'  9,   2  2  2  1  1  0  0  0  0  0/
+'FUE.TYP' 10,   1  1  1  1  0  0  0  0  0  0/
+
+
+'LIB'  '../../cmslink/bwrx300.lib' /    * Link to the library generated by CMS-LINK
+'DEP.CYC' 'CYCLE01' 0.0  01 /
+'DEP.FPD' 3/                            *equilibrium of I, Xe, Pm, Sm
+'FUE.INI' 'JILAB'/
+
+
+'COM' *---------------    Control rod data  --------------* 
+
+'CRD.DAT' 48 7.62 /                     * Number of steps and a single step in cm
+'CRD.ZON' 1  2  'CRUCIFORM' 10  365.76  0  381.0 /
+'CRD.SYM' 2  2 /
+'CRD.GRP' 1
+          3*0         1  1  1            3*0
+          2*0      1  1  1  1  1         2*0
+            0   1  1  1  1  1  1  1        0
+             1  1  1  1  1  1  1  1  1
+             1  1  1  1  1  1  1  1  1
+             1  1  1  1  1  1  1  1  1
+            0   1  1  1  1  1  1  1        0
+          2*0      1  1  1  1  1         2*0
+          3*0         1  1  1            3*0/
+
+'COM' *-----------------  Data for Detector data  -----------------*
+
+'DET.DAT' 43 /  * Number of physical detector paths
+
+'DET.LOC' 1
+          0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+          0   0   0  44   1  45   2  46   3  47   4  48  49   0   0   0
+          0   0  50  51  52  53  54  55  56  57  58  59  60  61   0   0
+          0  62   5  63   6  64   7  65   8  66   9  67  10  68  69   0
+          0  70  71  72  73  74  75  76  77  78  79  80  81  82  83   0
+          0  84  11  85  12  86  13  87  14  88  15  89  16  90  17   0
+          0  91  92  93  94  95  96  97  98  99 100 101 102 103 104   0
+          0 105  18 106  19 107  20 108  21 109  22 110  23 111  24   0
+          0 112 113 114 115 116 117 118 119 120 121 122 123 124 125   0
+          0 126  25 127  26 128  27 129  28 130  29 131  30 132  31   0
+          0 133 134 135 136 137 138 139 140 141 142 143 144 145 146   0
+          0 147  32 148  33 149  34 150  35 151  36 152  37 153  38   0
+          0 154 155 156 157 158 159 160 161 162 163 164 165 166 167   0
+          0   0 168 169  39 170  40 171  41 172  42 173  43 174   0   0
+          0   0   0 175 176 177 178 179 180 181 182 183 184   0   0   0
+          0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 / * Detector locations   
+
+'DET.LAB'      1657 2457 3257 4057
+          0849 1649 2449 3249 4049 4849
+          0841 1641 2441 3241 4041 4841 5641
+          0833 1633 2433 3233 4033 4833 5633
+          0825 1625 2425 3225 4025 4825 5625
+          0817 1617 2417 3217 4017 4817 5617
+               1609 2409 3209 4009 4809 /  * Detector labels    
+
+'COM' *-----------------  Fuel Temperature data  -----------------*
+
+'SEG.TFU', 0,    0.0,  206.5,  17.2 / * Segment fuel temperature fit calculated by INTERPIN
+'COM' EXPOSURE IN GWD/MT
+'TAB.TFU'   1, 0, 'EXP', 8, 'POW',      1
+           0.0    5.0   10.0   15.0   20.0   30.0   40.0   50.0
+   1.0,   83.3   46.7   22.0    0.0   -2.7   -0.7    1.1    1.7 /
+
+'COM' *------------- BWR Heat Balance data  -----------------* 
+
+'BWR.BAL' 'ON' 0.001, 120, 3.32E-3, 6.197E-4, 1.859E-3/ DEFAULTS FROM MANUAL
+'BWR.CTP' 40., 60.,   80.,   90., 100./                 DEFAULTS FROM MANUAL
+'BWR.TFW' 363, 409, 422.0, 430.0, 434.0/   
+'BWR.CWT'      40,      60,      80,      90,     100/  DEFAULTS FROM MANUAL
+'BWR.QRP' 0.10E-4, 0.30E-4, 0.80E-3, 1.25E-3, 3.00E-3/  
+'BWR.FCU' 5*0.0025/                                     DEFAULTS FROM MANUAL
+
+'COM' *------------- Essential BWR Hydraulic data  -----------------* 
+
+'BWR.ELE' -33. 0.0 381. 418. 525. 799.99 880. /   * Core elevation data
+'BWR.SEP' 225 12.84 /                             * No of separators and the pressure loss coeff.
+'BWR.TYP' 1
+          1 1 1 1 1 1 1 1 2
+          1 1 1 1 1 1 1 1 2
+          1 1 1 1 1 1 1 1 2
+          1 1 1 1 1 1 1 2   1*0
+          1 1 1 1 1 1 2     2*0
+          1 1 1 1 1 2       3*0
+          1 1 1 1 2         4*0
+          1 1 1 2           5*0
+          2 2 2             6*0  / * Location of inlet orifices
+
+'BWR.KOR' 18.8 180.4 / * Loss coeff. for the two types of inlet orifices
+'HYD.ITE'        / * Perform Hydraulic iteration
+'BWR.DLP'  'BYP' / * Activate the core flow distribution model
+'BWR.WLT'  5   5
+               20.    40.    60.    80.    100.
+          20.  0.011  0.063  0.081  0.088  0.090
+          40.  0.028  0.075  0.093  0.097  0.098
+          60.  0.050  0.091  0.106  0.108  0.106
+          80.  0.064  0.107  0.118  0.117  0.115
+         100.  0.075  0.120  0.129  0.126  0.122 / Required as initial guess to flow dist. model
+'BWR.SUP' 185  3774.  0.0  0.0  -10.0
+           55   114.  0.0  0.0  -10.0
+            1 26496.  0.0  0.0  -10.0 / * Core support plate and shroud leakage path data
+
+
+'COM' *------------- BWR Flow distribution Hydraulic data  -----------------* 
+
+'BWR.WTR' 1 2 0.0 381.0 1.32 1.5 132. 3.99 / * Flow characteristics of water rod
+'BWR.DIM' 1 1.23 1.5 13.4 0.25 0.97  / * Fuel design of GE8X8 with two water rods
+'BWR.SPA' 1 48.28 99.12 149.96 201.90 252.74 303.58 355.52 / * Locations of axial spacer grids (for T-H modeling) 
+'BWR.LOS' 1  8.07  1.15  1.36 /    * Tie plate and spacer loss coeff.
+'BWR.LKG' 1 1850. 0.5  -10. 0
+             702. 0.71 -10. 0 / * Assembly leakage flow paths to the interstitial bypass region
+
+'WRE'/
+'PRI.INP' 'CMAP'/
+'CMS.EDT' 'ON' '2RPF' '3RPF' '2EXP' '3EXP' '2KIN' '3KIN'/
+'PIN.EDT' 'ON' 'SUMM' /
+'FUE.INI' 'JILAB'/
+'STA'/
+
+'DEP.UNI' 'EFPD'/
+'DEP.HAL' 1096/
+'WRE'/
+'STA'/
+
+'PRI.INP' 'CMAP'/
+'STA' -1/
+
+'END'/

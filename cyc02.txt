@@ -1,0 +1,44 @@
+'COM'  * ------------------------------------------------------*/
+'COM'  *                                                       *
+'COM'  *                 BWRX300 MODEL                         *
+'COM'  *                                                       *
+'COM'  *                C Y C L E    02                        *
+'COM'  *                                                       *
+'COM'  * ------------------------------------------------------*
+
+'DIM.BWR' 18 9 16 /                          * 18 fuel assemblies, 9 c-rods & 16 det. loc.
+'DIM.CAL' 25 2 1 1 /                          * 25 axial nodes, Quarter core
+'DIM.DEP' 'EXP' 'XEN' 'SAM' 'HTFU' 'HVOI' 'HCRD' 'PIN' /   * Select depletion arguments
+
+'TIT.CAS' 'Cycle 02 Optimized'/   * Title for each case in run
+'FUE.NEW' 'TYPE08' '06-001' 200,  8,,, 6/      *load 200 FAs of type 8 as batch 6
+'INC.FIL' 'load.plan.s3inp'/
+
+'RES'  '../new_cyc01/cyc01.haling.res' 20000/
+
+'SEG.LIB'  09 '<var0>'/ 
+'SEG.LIB'  10 '<var1>'/
+'SEG.LIB'  11 '<var2>'/
+'SEG.LIB'  12 '<var3>'/
+'SEG.LIB'  13 '<var4>'/
+'SEG.LIB'  14 '<var5>'/
+'SEG.LIB'  15 '<var6>'/
+'SEG.LIB'  16 '<var7>'/
+'SEG.LIB'  17 '<var8>'/
+'SEG.LIB'  18 '<var9>'/
+'FUE.ZON'  08 1 'TYPE08' 02 0.00  04 15.24 09 50.292 10 85.344 11 120.396 12 155.448 13 190.5 14 225.552 15 260.604 16 295.656 17 330.708 18 365.76 04 381.0 03 / * Axial zone fuel
+
+'TIT.CAS' 'Cycle 02 Basedeck and Depletion'/   * Title for each case in run
+'DEP.CYC' 'CYCLE02' 0.0  02/
+'BAT.LAB' 6,'CYC002'/
+'BAT.EDT' 'OFF' /
+'CMS.EDT' 'ON' '2RPF' '3RPF' '2EXP' '3EXP' '2KIN' '3KIN'/
+'PIN.EDT' 'ON' 'SUMM' /
+'FUE.INI' 'JILAB'/
+'WRE'/
+'STA'/
+'DEP.UNI' 'EFPD'/
+'DEP.HAL' 1096/
+'WRE'/
+'STA'/
+'END'/
