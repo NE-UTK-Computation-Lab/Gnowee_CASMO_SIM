@@ -21,26 +21,24 @@ unique_evals = 0
 error_count = 0
 secondary_counter = 0
 
-mcnp_script_template= """#!/bin/bash
+cluster_script_template = """#!/bin/bash
 #PBS -V
-#PBS -q corei7
+#PBS -q fill
 #PBS -l nodes=1:ppn=8
 
 hostname
-module load MCNP6
+cd ${PBS_O_WORKDIR}
 
-RTP="/tmp/runtp--".`date "+%R%N"`
-cd $PBS_O_WORKDIR
-mcnp6 TASKS 8 name=%%%INPUT%%% runtpe=$RTP
-grep -a "final result" %%%INPUT%%%o > %%%INPUT%%%_done.dat
-rm $RTP"""
+module load studsvik
+casmo4 %%%INPUT%%%.inp
+grep -a "Run Completed" %%%INPUT%%%.out > %%%INPUT%%%_done.dat"""
 
-def build_mcnp_running_script(input_file_name):
+def build_running_script(input_file_name):
     #modified by Alex
     if input_file_name.endswith('.inp') == False:
         input_file_name = input_file_name + ".inp"
 
-    write_string = mcnp_script_template.replace("%%%INPUT%%%", input_file_name)
+    write_string = cluster_script_template.replace("%%%INPUT%%%", input_file_name)
     script_file = open(input_file_name + ".sh", 'w')
     script_file.write(write_string)
     script_file.close()
@@ -166,7 +164,7 @@ def Batch_Submit(list_of_feature_vectors, templateFile, prefix = "MCNP_File_Num"
             #generate the MCNP file
             write_mcnp_input_simple(templateFile, dict, proposedFilename)
             #create execution scripts for each feature vector
-            build_mcnp_running_script(proposedFilename)
+            build_running_script(proposedFilename)
             execution_scripts.append(proposedFilename + ".sh") #the exectution scripts will maintain the ordering
             #ID_list.append(str(evalNumber))
             ID_list.append(psudoname)

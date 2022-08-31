@@ -6,7 +6,7 @@
 #there are a couple of requirements for this method:
 #1) it should take in the feature vector from Gnowee
 #2) it should return 2 lists
-#the first being a list of strings that appear in the template MCNP file and which are to be replaced
+#the first being a list of strings that appear in the template CASMO file and which are to be replaced
 # the second being a list of the values that will be placed where the strings appear 
 #the order of the two lists should match
 
