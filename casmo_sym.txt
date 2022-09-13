@@ -1,11 +1,9 @@
 TTL * BWR Assembly
 * -------------------------
 * BWR system parameters
-PRE 72
-TMO 552
-PDE 50
-VOI 42
+PDE 45.8 'KWL'
 TFU 768
+TMO 551.65
 * -------------------------
 * Assembly Geometry
 BWR 10 1.30 13.40 0.16 0.95 0.69 1.30
@@ -81,10 +79,6 @@ LFU                                       * LAYOUT OF FUEL
 <ext6> <int6> <int13> <int12> <int11> <int10> <int9> <int8>
 <ext7> <int7> <int6> <int5> <int4> <int3> <int2> <int1> <int0>
 1 <ext7> <ext6> <ext5> <ext4> <ext3> <ext2> <ext1> <ext0> 1
-* -------------------------
-* Calculation Options
-THE 0
-FUM , , 2
 * -------------------------
 * Depletion Calculation
 DEP -63 * MWd/kgHM
