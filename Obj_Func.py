@@ -22,15 +22,15 @@ from functions import get_column as gc
 
 
 
-# This is objective function pairs Studsvik's SIMULATE-3 (full-core depletion
-# code with the optimizer Gnowee in order to optimize the axial enrichment 
-# loading, core loading pattern, and/or blade sequences to arrive at a design
-# which maximizes cycle length, achieves criticality at each exposure step, and
-# minimizes the linear power density and other thermal limits.
+# This objective function couples Studsvik's depletion code (SIMULATE-3) with 
+# an optimizer (Gnowee) in order to optimize the axial enrichment loading, 
+# core loading pattern, and/or blade sequences to arrive at a design which
+# maximizes cycle length, achieves criticality at each exposure step, 
+# minimizes the linear power density, and maintains margin to thermal limits.
 
 # input: vec = selected vector design from Gnowee
-# output: fitness = how well the design meets the objective function designated
-#                   by the user
+# output: fitness = how well the design achives the objective function
+#                   designated by the user
 
 def SIM3(vec):
     print(vec)
@@ -64,92 +64,121 @@ def SIM3(vec):
     
     #extracting data
     #---------------
-    #extract k-values at each exposure step - BLADE PATTERNS
-    k1 = gr(init_file+'.out','1  0   1.500','values.csv')
-    k1 = np.genfromtxt('values.csv') #read in from csv
-    k1 = k1[4] #takes just the k-values from the results
+    #k-values
+    values = gr(init_file+'.out','2  0 1096.00','values.csv')
+    values = np.genfromtxt('values.csv') #read in from csv
+    kvals = values[4] #takes just the k-values from the results
+    print('EOC k-eff:',kvals)
+    
+    #axial thermal data
+    data = gt(init_file+'.out','Axial Distribution Summary','axial.csv',7, 25)
+    linear_heat, linear_heat_list, max_linear_heat_list, max_linear_heat = gc(data,7,25,1)
+    fdz, fdz_list, max_fdz_list, max_fdz = gc(data,7,25,6)
+    print('Max LPD (kW/ft):',max_linear_heat) 
+    
+    #Cycle 01 Opt
+    #------------
+    #relative enrichment based on fuel type numbers
+    enrichtot = sum(vec)
+    print('Relative Enr:',enrichtot)
+    
+    #Equilibrium Cycle
+    #-----------------
+    # #enrichment
+    # enrichment = gt(init_file+'.out','Fueled Segments:','enrich.csv',6,10)
+    # enrich, enrich_list, max_enrich_list, max_enrich = gc(enrichment,6,10,3)
+    # enrichavg = np.mean(enrich_list)
+    # print('Enrich:',enrichavg)
+    
+    # #Separative Work Unit (SWU) Calculations
+    # xp = enrichavg/100 #concentration of the product uranium
+    # xf = 0.00711 #concentration of the feed uranium
+    # xt = 0.002 #concentration of the tails
+    # Mp = np.pi*(.44**2)*15.24*10.97 #mass of the product uranium
+    # Mf = ((xp-xt)/(xf-xt))*Mp #mass of the feed uranium
+    # Mt = Mf-Mp #mass of the tails
+    # #Value functions
+    # Vxp = (1-2*xp)*np.log((1-xp)/xp)
+    # Vxt = (1-2*xt)*np.log((1-xt)/xt)
+    # Vxf = (1-2*xf)*np.log((1-xf)/xf)
+    # Swu = Mp*Vxp + Mt*Vxt - Mf*Vxf #grams
+    # cost = 98*Swu/1000 #$
+    # print('Cost: $',cost)
+    
+    # #k-values
+    # # values = gr(init_file+'.out','2  0   4.950','values.csv')
+    # values = gr(init_file+'.out','2  0 1096.00','values.csv')
+    # values = np.genfromtxt('values.csv') #read in from csv
+    # kvals = values[4] #takes just the k-values from the results
+    # print('EOC k-eff:',kvals)
+    
+    #Blade Patterns
+    #--------------
+    #k-values at each exposure step
+    # k1 = gr(init_file+'.out','1  0   1.500','values.csv')
+    # k1 = np.genfromtxt('values.csv') #read in from csv
+    # k1 = k1[4] #takes just the k-values from the results
     # k2 = gr(init_file+'.out','2  0  730.00','values.csv')
     # k2 = np.genfromtxt('values.csv') 
     # k2 = k2[4]
     # k3 = gr(init_file+'.out','4  0 1080.00','values.csv')
     # k3 = np.genfromtxt('values.csv') 
     # k3 = k3[4] 
-    print('k-eff:',k1)
+    # print('k-eff:',k1)
     # print('k-eff:',k2)
     # print('k-eff:',k3)
-    
-    #CYCLE OPTIMIZATION PARAMETERS
-    #extract axial data
-    # data = gt(init_file+'.out','Axial Distribution Summary','axial.csv',7, 25)
-    # linear_heat, linear_heat_list, max_linear_heat_list, max_linear_heat = gc(data,7,25,1)
-    # fdz, fdz_list, max_fdz_list, max_fdz = gc(data,7,25,6)
-    # print('Max LPD (kW/ft):',max_linear_heat)
-    
-    # #get enrichment
-    # enrichment = gt(init_file+'.out','Fueled Segments:','enrich.csv',6,10)
-    # enrich, enrich_list, max_enrich_list, max_enrich = gc(enrichment,6,10,3)
-    # enrichavg = np.mean(enrich_list)
-    # print('Enrichment:',enrichavg)
-    # #Separative Work Unit (SWU) Calculations
-    # xp = enrichavg/100 #concentration of the product uranium
-    # xf = 0.00711 #concentration of the feed uranium
-    # xt = 0.002 #concentration of the tails
-    # Mp = (np.pi*(0.44**2)*0.88)*92*10.97 #mass of the product uranium (grams)
-    # Mf = ((xp-xt)/(xf-xt))*Mp #mass of the feed uranium (g)
-    # Mt = Mf-Mp #mass of the tails (g)
-    # #Value functions
-    # Vxp = (1-2*xp)*np.log((1-xp)/xp)
-    # Vxt = (1-2*xt)*np.log((1-xt)/xt)
-    # Vxf = (1-2*xf)*np.log((1-xf)/xf)
-    # Swu = Mp*Vxp + Mt*Vxt - Mf*Vxf #g SWU
-    # conv = 98 #$/1 kg SWU
-    # cost = conv*(Swu/1000) #$
-    # print('Cost: $',cost)
+
     
     # Fitness calculation
     #--------------------
-    #option 1 - fitness = difference between k-val & arbitrary "max" number
+    # #option 1 - fitness = difference between k-val & criticality value
     # fitness = 1.0 - kvals
-    #option 2 - fitness based off k-eff and kW/ft values
+    # #option 2 - fitness based off k-eff and kW/ft values
     # fitness = 2*(1 - kvals) +  0.02*(max_linear_heat - 16)
-    #option 3 - constraint on linear power density
+    # #option 3 - constraint on linear power density
     # if max_linear_heat>=16:
-    #     #removes axial loading that results in a linear heat over threshold
+    #     #applies fitness penalty to designs that result in LPD above limit
     #     fitness = 1E9
     # else:
-    #     #fitness = difference between k-val & arbitrary "max" number
+    #     #fitness = difference between k-val & criticality value
     #     fitness = 1 - kvals
-    #option 4 - constraint on EOC k-eff
+    # #option 4 - constraint on EOC k-eff
     # if kvals<1:
     #     fitness = 1E9
     # else:
     #     fitness = max_linear_heat - 16
-    #option 5 - constraint on EOC k-eff w/cost consideration
+    # #option 5 - constraint on EOC k-eff w/cost consideration
     # if kvals<1:
     #     fitness = 1E9
     # else:
     #     fitness = 0.5*(max_linear_heat - 16) + 0.01*(cost)
-    #option 6 - constraint on both k-eff and LPD
+    # #option 6 - constraint on both k-eff and LPD
     # if max_linear_heat>=16:
     #     fitness = 1E9
     # elif kvals<1:
     #     fitness = 1E9
     # else:
     #     fitness = 0.01*cost
-    #option 7 - constraint on k and focus on LPD
-    # if kvals <1:
+    # #option 7 - constraint on k-eff and minimize LPD and enrichment
+    # if kvals<1:
     #     fitness = 1E9
-    # elif max_linear_heat < 16:
-    #     fitness = 2 + (max_linear_heat - 16)
     # else:
-    #     fitness = (max_linear_heat - 16)
-    #option 8 - achieve criticality with blade sequences
-    if round(k1,5) == 1.00000:
-        fitness = 0.0
-    elif k1 < 1.00:
-        fitness = (1.0 - k1)
+    #     fitness = 0.75*(max_linear_heat - 16) + 0.05*enrichavg
+    # #option 8 - for cyc01 opt; constraint on criticality and LPD; minimize
+    # #           relative enrichment
+    if kvals<1:
+        fitness = 1E9
+    elif max_linear_heat>16:
+        fitness = 1E6
     else:
-        fitness = (k1 - 1.0)
+        fitness = 0.01*enrichtot    
+    # #option 8 - achieve criticality with blade sequences
+    # if round(k1,5) == 1.00000:
+    #     fitness = 0.0
+    # elif k1 < 1.00:
+    #     fitness = (1.0 - k1)
+    # else:
+    #     fitness = (k1 - 1.0)
         
     print('Fitness:',fitness)
 
@@ -166,8 +195,12 @@ def SIM3(vec):
     #open file with access mode 'a'
     #write results (vector/fitness) to file
     with open("results.csv", "a") as file_object:
-        file_object.write(str(vec)+'; '+str(fitness)+'; '+str(k1)+'\n')
+        # blade opt:
+        # file_object.write(str(vec)+'; '+str(fitness)+'; '+str(k1)+'\n')
+        # equil cycle:
         #file_object.write(str(vec)+'; '+str(fitness)+'; '+str(kvals)+'; '+str(max_linear_heat)+'; '+str(cost)+'\n')
+        # cyc01:
+        file_object.write(str(vec)+'; '+str(fitness)+'; '+str(kvals)+'; '+str(max_linear_heat)+'; '+str(enrichtot)+'\n')
         
     return fitness
 
@@ -219,27 +252,28 @@ def CASMO4(vec):
      
     #option 2 - Fuel type list for internal and external   
     
-    #separation of fuel type variable lists (Interior and Exterior)
-    #Internal lattice positions - fuel types w/ and w/out gadolinia
-    interior = []
-    i=0
-    while i<30:
-        interior.append(vec[i])
-        i = i + 1
-    
-    #External lattice positions - fuel types w/out gadolinia
-    exterior = []
-    while i<46:
-        exterior.append(vec[i])
-        i = i + 1
-    
     #initialization of function inputs
     #---------------------------------
     init_file = 'casmo_opt'
     num_of_var_opt1 = 30 #int
     num_of_var_opt2 = 16 #ext
     num_of_files = 8 #.inp,.cax,.log,.out,_done.dat,_script.txt,_script.txto, _script.txte
-    input_file = 'BWR_lattice.txt'
+    input_file = 'BWR_lattice.txt'   
+    
+    #separation of fuel type variable lists (Interior and Exterior)
+    #--------------------------------------------------------------
+    #Internal lattice positions - fuel types w/ and w/out gadolinia
+    interior = []
+    i=0
+    while i<30:
+        interior.append(vec[i])
+        i = i + 1
+
+    #External lattice positions - fuel types w/out gadolinia
+    exterior = []
+    while i<46:
+        exterior.append(vec[i])
+        i = i + 1
     
     #calling the functions
     #---------------------
@@ -257,10 +291,47 @@ def CASMO4(vec):
     vw2(init_file+'.inp',ind1,ind2,num_of_var_opt1,num_of_var_opt2)
     print('file made')
     
+    # -------------------------------------------------------------------------
     
+    # #option 3 - For creating CASMO inputs of a specific enrichment
     
-    #For both options
-    #----------------
+    # #initialization of function inputs
+    # #---------------------------------
+    # init_file = 'cas_opt'
+    # num_of_var_opt1 = 17 #int
+    # num_of_var_opt2 = 8 #ext
+    # num_of_files = 8 #.inp,.cax,.log,.out,_done.dat,_script.txt,_script.txto, _script.txte
+    # input_file = 'casmo_sym.txt'
+    
+    # #separation of fuel type variable lists (Interior and Exterior)
+    # #--------------------------------------------------------------
+    # #Internal lattice positions - fuel types w/ and w/out gadolinia
+    # interior = []
+    # i=0
+    # while i<17:
+    #     interior.append(vec[i])
+    #     i = i + 1
+    
+    # #External lattice positions - fuel types w/out gadolinia
+    # exterior = []
+    # while i<25:
+    #     exterior.append(vec[i])
+    #     i = i + 1
+    
+    # #calling the functions
+    # #---------------------
+    # #make input file and replace <> with variable inputs
+    # pg2(init_file+'.inp',input_file,interior,exterior,num_of_var_opt1,num_of_var_opt2)
+    # #fuel type data selector
+    # ind1,ind2 = vd2(interior,exterior)
+    # #fuel type writer
+    # vw2(init_file+'.inp',ind1,ind2,num_of_var_opt1,num_of_var_opt2)
+    # print('file made')
+    
+    # -------------------------------------------------------------------------
+    
+    #Data extraction for all options
+    #-------------------------------
     #cluster script for CASMO created/submitted
     roc(init_file+'.inp','casmo')
     
@@ -274,19 +345,20 @@ def CASMO4(vec):
     values = gr(init_file+'.out','BURNUP =   63.000 MWD/KG   K-INF =   ','values.csv')
     values = np.genfromtxt('values.csv') #read in from csv
     kvals = values[7] #takes just the k-values from the results
-    print(kvals)
+    print('K-eff: ',kvals)
     
     #constraints (Max power peaking factor)
     constraints = gr(init_file+'.out','PEAK: LL =','constraints.csv')
     constraints = np.genfromtxt('constraints.csv')
     ppf = max(constraints[:,7])
-    print(ppf)
+    print('PPF: ',ppf)
     
     #enrichment
     enrich = gr(init_file+'.out','1 40.0  768.0  551.7  551.7    0.0        0.000','enrich.csv')
     enrich = np.genfromtxt('enrich.csv')
     enrichment = (enrich[12])
     print(enrichment)
+    print('Enrichment: ',enrichment)
 
     #Separative Work Unit (SWU) Calculations
     xp = enrichment/100 #concentration of the product uranium
@@ -301,24 +373,33 @@ def CASMO4(vec):
     Vxf = (1-2*xf)*np.log((1-xf)/xf)
     Swu = Mp*Vxp + Mt*Vxt - Mf*Vxf #grams
     cost = 98*Swu/1000 #$
+    print('Cost: $',cost)
 
     # Fitness calculation
     # -------------------
     #option 1 - constraint on ppf
     # if ppf>=1.6:
-    #     #removes lattice arrangements that result in a ppf over the constraint
+    #     #applies fitness penalty to designs that result in a ppf over limit
     #     fitness = 1E9
     # else:
-    #     #fitness = difference between k-val & arbitrary "max" number; optimize to zero
+    #     #fitness = difference between k-val & arbitrary "max" number
     #     fitness = 0.85 - kvals
-    #option 2 - multi-objective function
+    #option 2 - multi-objective function w/out weighting
     # fitness = 2 + (ppf-1.6) + (0.85-kvals)
     #option 3 - multi-objective function w/ weighting factors
     # fitness = 100 + 100*(ppf-1.6) + 1000*(0.85-kvals)
-    #option 4 - multi-objective w/weighting w/cost factors
+    #option 4 - multi-objective w/weighting and cost factors
     fitness = 100 + 100*(ppf-1.6) + 1000*(0.85-kvals) + cost/10
     print(fitness)
-    
+    #option 5 - creates casmo input of specific enrichment; constraint on ppf
+    if ppf>=2.0:
+        #applies fitness penalty to designs that result in a ppf over limit
+        fitness = 1E9
+    else:
+        fitness = 2* np.abs(8.0-enrichment)
+        
+    print('Fitness:',fitness)
+            
     #perserve data
     #-------------
     #delete all the files
@@ -332,5 +413,8 @@ def CASMO4(vec):
     #open file with access mode 'a'
     #write results (vector/fitness) to file
     with open("results.csv", "a") as file_object:
+        #for options 1 and 2
         file_object.write(str(vec)+'; '+str(fitness)+'; '+str(kvals)+'; '+str(ppf)+'\n')
+        #for option 3
+        file_object.write(str(vec)+'; '+str(fitness)+'; '+str(kvals)+'; '+str(ppf)+'; '+str(enrichment)+'\n')
     return fitness
