@@ -1,0 +1,20 @@
+'MOX' 'OFF'/
+'NEW' 'cms.nu-all.lib'/
+'CAS' 'insert file path here' '4nu4UO2SPA'/ * 4.05% enriched fuel with a spacer grid card and maximum burnup
+'STA'/
+
+'CAS' '/insert file path here' 'nuGdUO2SPA'/ * 4.55% enriched fuel and Gd BA with a spacer grid card and maximum burnup
+'STA'/
+
+'CAS' 'insert file path here' '3nuUO2SPA'/ * 2.6% enriched fuel with a spacer grid card and maximum burnup
+'STA'/
+
+'CAS' 'insert file path here' '4nu4UO2'/ * 4.05% enriched fuel without a spacer grid card and maximum burnup
+'STA'/
+
+'CAS' 'insert file path here' 'nuGdUO2'/ * 4.55% enriched fuel and Gd BA without a spacer grid card and maximum burnup
+'STA'/
+
+'CAS' 'insert file path here' '3nuUO2'/ * 2.6% enriched fuel without a spacer grid card and maximum burnup
+'STA'/
+'END'/

@@ -1,0 +1,74 @@
+TTL * Model of a NUSCALE assembly with 4.55% enrich UO2 and 10% Gd concen fuel
+SIM, 'nuGdUO2SPA'
+************ INVARIANT DATA **************
+PDE 46.5 'KWL'
+PRE 127.6
+TMO 531.20
+BOR 595
+BOX 6.550, 0.7000E-05/304=100.0
+
+* Fuel Materials
+TFU 1020
+FUE 1 10.0 / 4.55
+FUE 2 10.0 / 4.55
+            64016 = 10
+      
+* Assembly Geometry
+*    N pitch B  /
+PWR 17 1.260 21.50 
+
+* Pin Geometry 
+PIN 1 0.409 0.466 0.475/'1' 'AIR' 'CAN' * Fuel 1
+PIN 2 0.409 0.466 0.475/'1' 'AIR' 'CAN' * Fuel 2
+PIN 3 0.572 0.612 / 'MOD' 'BOX' * INSTR TUBE
+PIN 4 0.572 0.612 / 'MOD' 'BOX' * GUIDE TUBE 
+
+PIN 4 0.433  0.437  0.484  0.572   0.612  /  
+      'AIC'  'AIR'  'CRS'  'MOD'   'BOX' 
+      // 1  'RCC' 'ROD'                   
+
+LPI
+3
+1  1
+2  1  1
+4  1  1  4
+1  1  2  1  1
+1  1  1  1  1  4  
+4  2  1  4  2  1  2  
+1  1  1  1  1  1  1  1
+1  1  1  1  1  1  1  1  1
+
+SPA 14.5,,, 8.19/ 718=79.55 302=20.45
+
+* Burnup Calculation
+DEP -12 * MWd/kgHM
+NLI STA
+
+***** Case Matrix *****
+COE ,, 0 0.5 1.5 2.5 3.5 4.5 5.5 6.5 7.5 8.5 9.5 10.5 11.5 12.5
+TFU 725 1200
+TMO 400 600
+BOR 0 600 1235
+ROD 'RCC' 
+
+***** TFU History *****
+TTL * Fuel Temperature History
+RES,,0
+TFU 725 1200
+DEP -12
+NLI STA
+
+***** TMO History *****
+TTL * Moderator Temperature History
+RES,,0
+TMO 400 600
+DEP -12
+NLI STA
+
+***** BOR History
+TTL * Boron History
+RES,,0
+BOR 0 600 1235
+DEP -12
+NLI STA
+END
